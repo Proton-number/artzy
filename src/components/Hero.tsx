@@ -18,11 +18,11 @@ export default function Hero() {
   };
 
   return (
-    <div className="text-center flex flex-col gap-10 lg:gap-16   p-8  sm:p-20 lg:p-32 ">
+    <div className="text-center flex flex-col gap-10 lg:gap-16   p-8  sm:p-16 lg:p-32 ">
       <h3 className="text-7xl sm:text-8xl font-semibold">
         Discover Artistic Wonders
       </h3>
-      <p className=" sm: w-10/12 text-2xl  lg:w-9/12 m-auto font-light">
+      <p className=" sm: w-10/12 text-2xl  lg:w-9/12 m-auto font-normal">
         Explore a curated collection of artworks from around the world. Dive
         into centuries of creativity, from classical masterpieces to
         contemporary expressions.
@@ -44,7 +44,7 @@ export default function Hero() {
           size="icon"
         >
           {" "}
-          <Search />
+          <Search strokeWidth={'2.25px'} />
         </Button>
       </div>
     </div>
