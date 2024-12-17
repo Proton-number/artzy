@@ -11,6 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import Image from "next/image";
 
 function Art() {
   const {
@@ -25,7 +26,8 @@ function Art() {
   } = appStore();
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchData = async (): Promise<void> => {
+      setIsLoading(true);
       try {
         await fetchArtworks();
         setIsLoading(false);
@@ -38,7 +40,7 @@ function Art() {
     fetchData();
   }, [fetchArtworks]);
 
-  const loadMoreArt = async () => {
+  const loadMoreArt = async (): Promise<void> => {
     if (moreArtworks && !isLoading) {
       setIsLoadingMore(true);
       try {
@@ -52,7 +54,7 @@ function Art() {
   };
 
   if (isLoading) {
-    return <div>loading...</div>;
+    return <div className="animate-pulse text-3xl">loading...</div>;
   }
 
   if (!artworks || artworks.length === 0) {
@@ -60,21 +62,48 @@ function Art() {
   }
 
   return (
-    <div className="mt-10">
-      <div>
-        {artworks?.map((artwork) => (
-          <Card key={artwork.id}>
-            <CardHeader>
-              <CardTitle>{artwork.artist_title}</CardTitle>
-            </CardHeader>
-          </Card>
-        ))}
+    <>
+      <div className="mt-10 p-4">
+        <div
+          className="grid grid-cols-1 sm:grid-cols-3
+   lg:grid-cols-4 gap-6"
+        >
+          {artworks.map((artwork, index) => {
+            const artUrl = artwork.image_id
+              ? `https://www.artic.edu/iiif/2/${artwork.image_id}/full/843,/0/default.jpg`
+              : "/placeholder.png";
+            return (
+              <Card key={index}>
+                <div className="relative w-full h-96 sm:h-64 lg:h-96">
+                  <Image
+                    src={artUrl}
+                    alt={artwork.title || "Artwork"}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <CardHeader>
+                  <CardTitle className="text-xl font-semibold">
+                    {artwork.title}
+                  </CardTitle>
+                  <CardDescription>By {artwork.artist_title}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p>{artwork.place_of_origin}</p>
+                  <p></p>
+                </CardContent>
+              </Card>
+            );
+          })}
+        </div>
       </div>
-      <Button onClick={loadMoreArt}>
-        {" "}
-        {isLoadingMore ? "Loading..." : "Load More"}
-      </Button>
-    </div>
+      {moreArtworks && (
+        <Button onClick={loadMoreArt} className=" flex items-center mt-12 mb-3">
+          {" "}
+          {isLoadingMore ? "Loading..." : "Load More"}
+        </Button>
+      )}
+    </>
   );
 }
 

@@ -6,6 +6,8 @@ interface Artwork {
   imageUrl: string;
   place_of_origin: string;
   artist_title: string;
+  iiif_url: string;
+  image_id: string;
 }
 
 interface AppStore {
@@ -48,6 +50,7 @@ export const appStore = create<AppStore>((set) => ({
         title: art.title,
         artist_title: art.artist_title || "Unknown Artist",
         place_of_origin: art.place_of_origin || "Unknown Origin",
+        image_id: art.image_id || null,
       }));
       // Determine if more pages are available
       const moreArtworks =
