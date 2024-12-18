@@ -1,7 +1,3 @@
-"use client";
-
-import { Button } from "./ui/button";
-
 export default function Hero() {
   return (
     <div className="text-center flex flex-col justify-center items-center   p-8  sm:p-16 lg:p-40 min-h-screen">
