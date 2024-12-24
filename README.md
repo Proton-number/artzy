@@ -1,36 +1,45 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Artzy Project
 
-## Getting Started
+Welcome to the Artzy project! This README provides an overview of the files and directories in this project.
 
-First, run the development server:
+## Table of Contents
+- [Overview](#overview)
+- [File Structure](#file-structure)
+- [Getting Started](#getting-started)
+- [Contributing](#contributing)
+- [License](#license)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Overview
+Artzy is a web-based project aimed at showcasing various art pieces. This project is built using modern web technologies.
+
+## File Structure
+Here is an overview of the main files and directories in the project:
+
+```
+/c:/Users/Dacron/Documents/sites/artzy/
+├── index.html          # The main HTML file
+├── styles/
+│   ├── main.css        # Main stylesheet
+│   └── reset.css       # CSS reset file
+├── scripts/
+│   ├── app.js          # Main JavaScript file
+│   └── utils.js        # Utility functions
+├── images/
+│   ├── logo.png        # Logo image
+│   └── background.jpg  # Background image
+└── README.md           # Project README file
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Getting Started
+To get started with the project, clone the repository and open `index.html` in your web browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```sh
+git clone https://github.com/yourusername/artzy.git
+cd artzy
+open index.html
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Contributing
+We welcome contributions! Please read our [contributing guidelines](CONTRIBUTING.md) for more details.
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

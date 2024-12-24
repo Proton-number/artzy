@@ -7,11 +7,11 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import Image from "next/image";
+import Link from "next/link";
 
 function Art() {
   const {
@@ -23,6 +23,7 @@ function Art() {
     setIsLoading,
     isLoadingMore,
     setIsLoadingMore,
+    search,
   } = appStore();
 
   useEffect(() => {
@@ -64,40 +65,49 @@ function Art() {
   return (
     <>
       <div className="mt-10 p-4">
-        <div
-          className="grid grid-cols-1 sm:grid-cols-3
-   lg:grid-cols-4 gap-6"
-        >
+        {search && (
+          <div className="mb-6 text-center">
+            <h2 className="text-2xl font-semibold">
+              Search Results for: <span className="italic">{search}</span>
+            </h2>
+            <p className="text-gray-500 dark:text-gray-400">
+              Found {artworks.length} results
+            </p>
+          </div>
+        )}
+        <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-6">
           {artworks.map((artwork, index) => {
             const artUrl = artwork.image_id
               ? `https://www.artic.edu/iiif/2/${artwork.image_id}/full/843,/0/default.jpg`
-              : "/placeholder.png";
+              : "/placeholder.jpg";
             return (
-              <Card key={index}>
-                <div className="relative w-full h-96 sm:h-64 lg:h-96">
-                  <Image
-                    src={artUrl}
-                    alt={artwork.title || "Artwork"}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                <CardHeader>
-                  <CardTitle className="text-xl font-semibold">
-                    {artwork.title}
-                  </CardTitle>
-                  <CardDescription>By {artwork.artist_title}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p>{artwork.place_of_origin}</p>
-                  <p></p>
-                </CardContent>
-              </Card>
+              <Link key={index} href={`/Art/${artwork.id}`}>
+                <Card className="shadow-lg">
+                  <div className="relative w-full h-96 sm:h-64 lg:h-96 ">
+                    <Image
+                      src={artUrl}
+                      alt={artwork.title || "Artwork"}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                  <CardHeader>
+                    <CardTitle className="text-xl font-semibold">
+                      {artwork.title}
+                    </CardTitle>
+                    <CardDescription>By {artwork.artist_title}</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <p>{artwork.place_of_origin}</p>
+                    <p></p>
+                  </CardContent>
+                </Card>
+              </Link>
             );
           })}
         </div>
       </div>
-      {moreArtworks && (
+      {moreArtworks && !search && (
         <Button onClick={loadMoreArt} className=" flex items-center mt-12 mb-3">
           {" "}
           {isLoadingMore ? "Loading..." : "Load More"}

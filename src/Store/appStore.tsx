@@ -8,6 +8,9 @@ interface Artwork {
   artist_title: string;
   iiif_url: string;
   image_id: string;
+  image_url?: string | null;
+  artist_display: string;
+  medium_display: string;
 }
 
 interface AppStore {
@@ -21,8 +24,11 @@ interface AppStore {
   setIsLoading: (val: boolean) => void;
   isLoadingMore: boolean;
   setIsLoadingMore: (val: boolean) => void;
+  searchedArtworks: () => Promise<void>;
+  artDetails: Artwork | null; // Artwork details
+  setArtDetails: (val: Artwork) => void;
 }
-export const appStore = create<AppStore>((set) => ({
+export const appStore = create<AppStore>((set, get) => ({
   search: "",
   artworks: [],
   setSearch: (val: string) => set(() => ({ search: val })),
@@ -32,6 +38,8 @@ export const appStore = create<AppStore>((set) => ({
   setIsLoading: (val: boolean) => set(() => ({ isLoading: val })),
   isLoadingMore: false,
   setIsLoadingMore: (val: boolean) => set(() => ({ isLoadingMore: val })),
+  artDetails: null,
+  setArtDetails: (val: Artwork) => set(() => ({ artDetails: val })),
 
   //   Fetching the arts
   fetchArtworks: async (page = 1) => {
@@ -51,6 +59,7 @@ export const appStore = create<AppStore>((set) => ({
         artist_title: art.artist_title || "Unknown Artist",
         place_of_origin: art.place_of_origin || "Unknown Origin",
         image_id: art.image_id || null,
+        iiif_url: art.iiif_url || "",
       }));
       // Determine if more pages are available
       const moreArtworks =
@@ -61,6 +70,50 @@ export const appStore = create<AppStore>((set) => ({
         moreArtworks,
         page,
       }));
+    } catch (error) {
+      console.error("Failed to fetch artworks:", error);
+    }
+  },
+  //  Searching the arts
+  searchedArtworks: async () => {
+    try {
+      console.log("Searching artworks...");
+      const response = await fetch(
+        `https://api.artic.edu/api/v1/artworks/search?q=${
+          get().search
+        }&fields=id,title,image_id,artist_title,place_of_origin,iiif_url`
+      );
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const json = await response.json();
+      const artworkIds = json.data.map((item: any) => item.id);
+      const artworksResponse = await fetch(
+        `https://api.artic.edu/api/v1/artworks?ids=${artworkIds.join(
+          ","
+        )}&fields=id,title,image_id,artist_title,place_of_origin,iiif_url`
+      );
+      const artworksJson = await artworksResponse.json();
+
+      // Transform API response
+      const artworks: Array<Artwork> = artworksJson.data.map((art: any) => ({
+        id: art.id,
+        title: art.title,
+        artist_title: art.artist_title || "Unknown Artist",
+        place_of_origin: art.place_of_origin || "Unknown Origin",
+        image_id: art.image_id || null,
+        iiif_url: art.iiif_url || "",
+        image_url: art.image_id
+          ? `https://www.artic.edu/iiif/2/${art.image_id}/full/843,/0/default.jpg`
+          : null,
+      }));
+
+      set({
+        artworks,
+        isLoading: false,
+        page: 1, // Reset page when searching
+        moreArtworks: false, // Disable infinite scroll during search
+      });
     } catch (error) {
       console.error("Failed to fetch artworks:", error);
     }

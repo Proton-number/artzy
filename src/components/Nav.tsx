@@ -18,23 +18,14 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-  CommandSeparator,
-  CommandShortcut,
 } from "@/components/ui/command";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { DialogTitle } from "@/components/ui/dialog";
 
 import { useState, useEffect } from "react";
 
 export default function Nav() {
   const { setTheme } = useTheme();
-  const { search, setSearch } = appStore();
+  const { search, setSearch, searchedArtworks } = appStore();
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -48,6 +39,21 @@ export default function Nav() {
     return () => document.removeEventListener("keydown", handleKeyPress);
   }, []);
 
+  const handleSearch = async (search: string) => {
+    try {
+      await searchedArtworks();
+      setOpen(false);
+    } catch (error) {
+      console.error("Failed to search artworks:", error);
+    }
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleSearch(search);
+    }
+  };
+
   return (
     <>
       <div className="fixed bg-background/15 backdrop-blur-lg border border-background/10 w-full">
@@ -56,7 +62,7 @@ export default function Nav() {
             type=""
             onFocus={() => setOpen(true)}
             placeholder="Search artists, styles, periods..."
-            className="rounded-lg p-5 w-9/12 sm:w-3/6 lg:w-1/4  text-xs sm:text-sm lg:text-lg  placeholder-pink-400 dark:placeholder-white opacity-75 cursor-pointer hover:opacity-100 hover:dark:opacity-100"
+            className="rounded-lg p-5 w-9/12 sm:w-3/6 lg:w-1/4  text-xs sm:text-sm lg:text-lg  opacity-50 cursor-pointer hover:opacity-85 hover:dark:opacity-85 bg-gray-50 dark:bg-gray-950"
           />
 
           <DropdownMenu>
@@ -86,14 +92,27 @@ export default function Nav() {
           placeholder="Type a command or search..."
           value={search}
           onValueChange={setSearch}
+          onKeyDown={handleKeyPress}
         />
         <DialogTitle className="p-2">Search for Art</DialogTitle>
         <CommandList>
           <CommandEmpty>No results found.</CommandEmpty>
           <CommandGroup heading="Suggestions">
-            <CommandItem>City Landscape</CommandItem>
-            <CommandItem>At the Moulin Rouge</CommandItem>
-            <CommandItem>Cornelius Allerton</CommandItem>
+            {[
+              { label: "City Landscape", value: "City Landscape" },
+              { label: "At the Moulin Rouge", value: "At the Moulin Rouge" },
+              { label: "Cornelius Allerton", value: "Cornelius Allerton" },
+            ].map((item) => (
+              <CommandItem
+                key={item.value}
+                onSelect={() => {
+                  setSearch(item.value);
+                  handleSearch(item.value);
+                }}
+              >
+                {item.label}
+              </CommandItem>
+            ))}
           </CommandGroup>
         </CommandList>
       </CommandDialog>
