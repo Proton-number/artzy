@@ -56,7 +56,14 @@ export const appStore = create<AppStore>((set, get) => ({
       }
       const json = await response.json();
       // Transform API response
-      const artworks: Array<Artwork> = json.data.map((art: any) => ({
+      const artworks: Array<Artwork> = json.data.map((art: {
+        id: string;
+        title: string;
+        artist_title: string | null;
+        place_of_origin: string | null;
+        image_id: string | null;
+        iiif_url: string | null;
+      }) => ({
         id: art.id,
         title: art.title,
         artist_title: art.artist_title || "Unknown Artist",
@@ -102,7 +109,14 @@ export const appStore = create<AppStore>((set, get) => ({
       const artworksJson = await artworksResponse.json();
 
       // Transform API response
-      const artworks: Array<Artwork> = artworksJson.data.map((art: any) => ({
+      const artworks: Array<Artwork> = artworksJson.data.map((art: {
+        id: string;
+        title: string;
+        artist_title: string | null;
+        place_of_origin: string | null;
+        image_id: string | null;
+        iiif_url: string | null;
+      }) => ({
         id: art.id,
         title: art.title,
         artist_title: art.artist_title || "Unknown Artist",
