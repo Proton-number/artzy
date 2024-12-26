@@ -11,7 +11,6 @@ import {
 import { Input } from "./ui/input";
 import { appStore } from "@/Store/appStore";
 import {
-  Command,
   CommandDialog,
   CommandEmpty,
   CommandGroup,
@@ -22,11 +21,15 @@ import {
 import { DialogTitle } from "@/components/ui/dialog";
 
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 export default function Nav() {
   const { setTheme } = useTheme();
-  const { search, setSearch, searchedArtworks } = appStore();
+  const { search, setSearch, searchedArtworks, artDetails } = appStore();
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+
+  const isHomePage = pathname === "/";
 
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
@@ -57,35 +60,60 @@ export default function Nav() {
   return (
     <>
       <div className="fixed bg-background/15 backdrop-blur-lg border border-background/10 w-full">
-        <div className="p-2 flex flex-row justify-around  items-center ">
-          <Input
-            type=""
-            onFocus={() => setOpen(true)}
-            placeholder="Search artists, styles, periods..."
-            className="rounded-lg p-5 w-9/12 sm:w-3/6 lg:w-1/4  text-xs sm:text-sm lg:text-lg  opacity-50 cursor-pointer hover:opacity-85 hover:dark:opacity-85 bg-gray-50 dark:bg-gray-950"
-          />
-
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="icon">
-                <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-                <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-                <span className="sr-only">Toggle theme</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => setTheme("light")}>
-                Light
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setTheme("dark")}>
-                Dark
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setTheme("system")}>
-                System
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
+        {isHomePage ? (
+          <div className="p-2 flex flex-row justify-around items-center">
+            <Input
+              type=""
+              onFocus={() => setOpen(true)}
+              placeholder="Search artists, styles, periods..."
+              className="rounded-lg p-5 w-9/12 sm:w-3/6 lg:w-1/4 text-xs sm:text-sm lg:text-lg opacity-50 cursor-pointer hover:opacity-85 hover:dark:opacity-85 bg-gray-50 dark:bg-gray-950"
+            />
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="icon">
+                  <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+                  <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+                  <span className="sr-only">Toggle theme</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={() => setTheme("light")}>
+                  Light
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setTheme("dark")}>
+                  Dark
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setTheme("system")}>
+                  System
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        ) : (
+          <div className="p-2 flex flex-row justify-around items-center">
+            <span className="text-lg">{artDetails?.title}</span>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="icon">
+                  <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+                  <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+                  <span className="sr-only">Toggle theme</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={() => setTheme("light")}>
+                  Light
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setTheme("dark")}>
+                  Dark
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setTheme("system")}>
+                  System
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        )}
       </div>
       <CommandDialog open={open} onOpenChange={setOpen}>
         <CommandInput

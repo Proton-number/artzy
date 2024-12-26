@@ -11,6 +11,9 @@ interface Artwork {
   image_url?: string | null;
   artist_display: string;
   medium_display: string;
+  date_display: string;
+  dimensions: string;
+  description: string;
 }
 
 interface AppStore {

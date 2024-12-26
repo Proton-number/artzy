@@ -1,20 +1,15 @@
 "use client";
 import Hero from "@/components/Hero";
-import Nav from "@/components/Nav";
 import Art from "./Art/page";
 import FloatingButton from "@/components/FloatingButton";
 import { useEffect } from "react";
-import { usePathname } from "next/navigation";
 
 export default function Home() {
   useEffect(() => {
     const img = new Image(); // Create new Image object to preload image asset
     img.src = "/background.jpg"; // Set the src attribute to the image asset URL
   }, []);
-  const pathname = usePathname();
 
-  // Check if we are on the home page
-  const isHomePage = pathname === "/";
   return (
     <>
       <div className=" items-center justify-items-center min-h-screen font-[family-name:var(--font-geist-sans)]">

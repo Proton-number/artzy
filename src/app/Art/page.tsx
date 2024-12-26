@@ -82,13 +82,13 @@ function Art() {
               : "/placeholder.jpg";
             return (
               <Link key={index} href={`/Art/${artwork.id}`}>
-                <Card className="shadow-lg">
+                <Card className="shadow-lg h-full cursor-pointer">
                   <div className="relative w-full h-96 sm:h-64 lg:h-96 ">
                     <Image
                       src={artUrl}
                       alt={artwork.title || "Artwork"}
                       fill
-                      className="object-cover"
+                      className="object-cover "
                     />
                   </div>
                   <CardHeader>
