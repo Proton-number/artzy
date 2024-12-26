@@ -63,6 +63,9 @@ export const appStore = create<AppStore>((set, get) => ({
         place_of_origin: art.place_of_origin || "Unknown Origin",
         image_id: art.image_id || null,
         iiif_url: art.iiif_url || "",
+        image_url: art.image_id
+          ? `https://www.artic.edu/iiif/2/${art.image_id}/full/843,/0/default.jpg`
+          : null,
       }));
       // Determine if more pages are available
       const moreArtworks =
