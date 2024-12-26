@@ -42,7 +42,7 @@ export default function Nav() {
     return () => document.removeEventListener("keydown", handleKeyPress);
   }, []);
 
-  const handleSearch = async (search: string) => {
+  const handleSearch = async () => {
     try {
       await searchedArtworks();
       setOpen(false);
@@ -53,7 +53,7 @@ export default function Nav() {
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      handleSearch(search);
+      handleSearch();
     }
   };
 
@@ -135,7 +135,7 @@ export default function Nav() {
                 key={item.value}
                 onSelect={() => {
                   setSearch(item.value);
-                  handleSearch(item.value);
+                  handleSearch();
                 }}
               >
                 {item.label}
