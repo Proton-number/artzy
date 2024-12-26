@@ -100,7 +100,7 @@ export const appStore = create<AppStore>((set, get) => ({
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const json = await response.json();
-      const artworkIds = json.data.map((item: any) => item.id);
+      const artworkIds = json.data.map((item: { id: string }) => item.id);
       const artworksResponse = await fetch(
         `https://api.artic.edu/api/v1/artworks?ids=${artworkIds.join(
           ","
