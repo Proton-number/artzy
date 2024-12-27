@@ -40,7 +40,10 @@ const ArtDetails = () => {
   if (loading) {
     return (
       <div className="animate-pulse text-3xl flex items-center space-y-4 justify-center min-h-screen">
-        Loading...
+        <div className="loading">
+          <div className="d1"></div>
+          <div className="d2"></div>
+        </div>
       </div>
     );
   }

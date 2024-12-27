@@ -55,7 +55,7 @@ function Art() {
   };
 
   if (isLoading) {
-    return <div className="animate-pulse text-3xl">loading...</div>;
+    return <div className="animate-pulse text-3xl">Loading...</div>;
   }
 
   if (!artworks || artworks.length === 0) {
@@ -82,13 +82,15 @@ function Art() {
               : "/placeholder.jpg";
             return (
               <Link key={index} href={`/Art/${artwork.id}`}>
-                <Card className="shadow-lg h-full cursor-pointer">
+                <Card className="shadow-lg h-full">
                   <div className="relative w-full h-96 sm:h-64 lg:h-96 ">
                     <Image
                       src={artUrl}
                       alt={artwork.title || "Artwork"}
                       fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 33vw, 25vw"
                       className="object-cover "
+                      priority
                     />
                   </div>
                   <CardHeader>
