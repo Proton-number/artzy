@@ -1,6 +1,6 @@
 export default function Hero() {
   return (
-    <div className="text-center flex flex-col justify-center items-center   p-8  sm:p-16 lg:p-40 min-h-screen">
+    <div className="text-center flex flex-col justify-center items-center   p-16  sm:p-16 lg:p-40 min-h-screen">
       <h3 className="text-7xl sm:text-8xl font-semibold">
         Discover Artistic Wonders
       </h3>
