@@ -2,7 +2,6 @@
 
 import { motion, AnimatePresence } from "motion/react";
 import { Tangerine } from "next/font/google";
-import React from "react";
 import { useState, useEffect } from "react";
 
 interface LoadingProps {
